@@ -1,0 +1,74 @@
+# ----------------------------------------------------------------------
+# 1. Environment and Dependency Files
+# ----------------------------------------------------------------------
+
+# Virtual Environment Folders
+.venv/
+env/
+venv/
+__pycache__/
+
+# Package installation logs (e.g., from UV or pip)
+*.egg-info
+.python-version
+
+
+# ----------------------------------------------------------------------
+# 2. Data and Artifacts (CRITICAL: Do not commit large files)
+# ----------------------------------------------------------------------
+
+# Raw and Processed Data
+# This prevents ALL data files from being committed.
+# We will manage models/ separately below.
+data/
+
+# Model Artifacts (Joblib/Pickle files)
+# The 'models/' folder contains large, generated binary files.
+# If you are using DVC or MLflow for model versioning, you MUST ignore this in Git.
+models/
+
+# Database files (if you used a local SQLite or similar)
+*.db
+*.sqlite3
+.ml_artifacts_v1.zip.zip
+
+
+# ----------------------------------------------------------------------
+# 3. Notebook Files and Output
+# ----------------------------------------------------------------------
+
+# Jupyter Notebook files that track output/state
+.ipynb_checkpoints
+
+# Large output files from notebooks
+*.html
+*.pdf
+
+# ----------------------------------------------------------------------
+# 4. Logs and Dynamic Outputs
+# ----------------------------------------------------------------------
+
+# Logs
+*.log
+log/
+tmp/
+
+# Streamlit data cache
+.streamlit/
+
+# ----------------------------------------------------------------------
+# 5. IDE and OS Files
+# ----------------------------------------------------------------------
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# PyCharm
+.idea/
