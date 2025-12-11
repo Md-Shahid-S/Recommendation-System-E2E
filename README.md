@@ -10,7 +10,7 @@ The core of the system is an **Item-Item Collaborative Filtering** model used to
 
 The system is split into three decoupled services:
 
-1.  **ML Pipeline (src/):** Data cleaning, feature engineering, and model training.
+1.  **ML Pipeline :** Data cleaning, feature engineering, and model training.
 2.  **Model Serving (FastAPI):** A high-performance, containerized API that loads the model artifacts and returns recommendations as JSON.
 3.  **Frontend (Streamlit):** A user-friendly web application that consumes the FastAPI endpoint and displays rich movie details.
 
