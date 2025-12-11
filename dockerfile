@@ -15,7 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # --- ARTIFACT DOWNLOAD STEP (NEW) ---
 # Define the URL of your uploaded zip file from the GitHub Release
 # You must paste your exact, public download link here!
-ENV ARTIFACT_URL="YOUR_PUBLIC_GITHUB_RELEASE_ZIP_URL"
+ENV ARTIFACT_URL="https://github.com/Md-Shahid-S/Recommendation-System-E2E/releases/tag/v1.0.0/ml_artifacts_v1.zip.zip"
+"
 
 # Create the models folder and download the artifacts
 RUN mkdir models
