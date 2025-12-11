@@ -25,7 +25,6 @@ data/
 # Model Artifacts (Joblib/Pickle files)
 # The 'models/' folder contains large, generated binary files.
 # If you are using DVC or MLflow for model versioning, you MUST ignore this in Git.
-models/
 
 # Database files (if you used a local SQLite or similar)
 *.db
