@@ -17,14 +17,7 @@ __pycache__/
 # 2. Data and Artifacts (CRITICAL: Do not commit large files)
 # ----------------------------------------------------------------------
 
-# Raw and Processed Data
-# This prevents ALL data files from being committed.
-# We will manage models/ separately below.
 data/
-
-# Model Artifacts (Joblib/Pickle files)
-# The 'models/' folder contains large, generated binary files.
-# If you are using DVC or MLflow for model versioning, you MUST ignore this in Git.
 
 # Database files (if you used a local SQLite or similar)
 *.db

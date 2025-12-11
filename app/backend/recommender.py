@@ -7,7 +7,7 @@ import os
 import ast
 
 # --- 1. Loading Model Artifacts at Startup ---
-MODELS_DIR = 'app/models/'
+MODELS_DIR = '../../models/'
 MODEL_PATH = os.path.join(MODELS_DIR, 'knn_recommender_model.joblib')
 INDEX_MAP_PATH = os.path.join(MODELS_DIR, 'movie_index_map.pkl')
 LOOKUP_PATH = os.path.join(MODELS_DIR, 'final_movie_lookup_df.pkl') 

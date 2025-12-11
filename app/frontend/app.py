@@ -9,7 +9,7 @@ import joblib
 import os 
 
 # Define the relative path to the models directory
-MODELS_DIR = 'app/models/' 
+MODELS_DIR = '../../models/'
 INDEX_MAP_PATH = os.path.join(MODELS_DIR, 'movie_index_map.pkl')
 
 # --- Load the full list of titles once when the app starts ---
@@ -29,7 +29,7 @@ if not FULL_MOVIE_LIST:
 
 # IMPORTANT: API_URL needs to be updated when deployed to Render!
 # For local testing, use the Uvicorn address:
-API_URL = "https://recommendation-system-e2e-1.onrender.com/recommendations/user/"
+API_URL = "https://recommendation-system-e2e.onrender.com/recommendations/user/"
 
 st.set_page_config(
     page_title="Item-Item Movie Recommender",
