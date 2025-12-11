@@ -9,7 +9,7 @@ import joblib
 import os 
 
 # Define the relative path to the models directory
-MODELS_DIR = '../../models/' 
+MODELS_DIR = 'app/models/' 
 INDEX_MAP_PATH = os.path.join(MODELS_DIR, 'movie_index_map.pkl')
 
 # --- Load the full list of titles once when the app starts ---
