@@ -1,46 +1,65 @@
-# Use an official Python runtime image
-FROM python:3.11
+# ---- Dockerfile (copy-paste) ----
+FROM python:3.11-slim
 
-# Prevent interactive prompts from apt
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# Install system packages required for numerical/scientific Python.
-# libopenblas-dev + liblapack-dev provide BLAS/LAPACK; libgfortran5 required by many wheels.
-# build-essential gives compilers if a wheel needs to be compiled.
+# Install system deps needed for scientific packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      curl \
-      unzip \
-      ca-certificates \
-      build-essential \
-      gfortran \
-      libgfortran5 \
-      libopenblas-dev \
-      liblapack-dev \
+      curl unzip build-essential gfortran libgfortran5 \
+      libopenblas-dev liblapack-dev ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# create app user (optional, but good practice)
+RUN useradd --create-home --shell /bin/bash appuser
 WORKDIR /app
 
-# Copy requirements first to leverage Docker layer caching
-COPY requirements.txt /app/backend/requirements.txt
+# Copy backend requirements first to leverage caching
+# Adjust path if you want root-level requirements instead
+COPY app/backend/requirements.txt /app/backend/requirements.txt
 
-# Install Python dependencies
-RUN pip install --upgrade pip setuptools wheel && \
+# Upgrade pip and install backend deps
+RUN python -m pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r /app/backend/requirements.txt
-# --- ARTIFACT DOWNLOAD STEP ---
-# NOTE: ensure ARTIFACT_URL points to a direct downloadable zip (contains /download/ or is a raw link).
-ENV ARTIFACT_URL="https://github.com/Md-Shahid-S/Recommendation-System-E2E/releases/download/v1.0.0/ml_artifacts_v1.zip"
 
-# Create models folder and download+unzip artifact in a single layer for smaller image
-RUN mkdir -p /app/models && \
-    curl -fsSL "$ARTIFACT_URL" -o /tmp/artifacts.zip && \
-    unzip /tmp/artifacts.zip -d /app/models && \
-    rm -f /tmp/artifacts.zip
+# Optionally copy models if present in the repo (recommended)
+# If you commit models under app/models, they will be copied here
+COPY app/models /app/models
 
-# Copy application code (do this after installing deps and artifacts so rebuilds are faster)
-COPY app/backend/ /app/
+# If models are not committed, attempt to download artifact.
+# Replace ARTIFACT_URL with exact release asset url if you use releases.
+ARG ARTIFACT_URL="https://github.com/Md-Shahid-S/Recommendation-System-E2E/releases/download/v1.0.0/ml_artifacts_v1.zip.zip"
+RUN if [ ! -d "/app/models" ] || [ -z "$(ls -A /app/models 2>/dev/null)" ]; then \
+      if [ -n "$ARTIFACT_URL" ]; then \
+        echo "No committed models found — attempting to download artifact..."; \
+        mkdir -p /tmp/artifacts && \
+        curl -fsSL "$ARTIFACT_URL" -o /tmp/artifacts/artifacts.zip && \
+        unzip /tmp/artifacts/artifacts.zip -d /app/models && rm -rf /tmp/artifacts; \
+      else \
+        echo "No models found and no ARTIFACT_URL provided — continuing without models."; \
+      fi \
+    else \
+      echo "Models found in repo; skipping artifact download."; \
+    fi
 
-# Expose port and set start command
+# Copy the backend source files
+COPY app/backend/ /app/backend/
+
+# If you also want to run a frontend in the same container (not recommended),
+# copy frontend files and install its requirements as needed.
+# COPY app/frontend/ /app/frontend/
+
+# Ensure proper ownership (if using non-root user)
+RUN chown -R appuser:appuser /app
+
+USER appuser
+WORKDIR /app/backend
+
+# Use the PORT environment variable that Render sets; provide fallback 8000 locally.
+# Note: use shell form to expand ${PORT}
+ENTRYPOINT ["sh", "-c"]
+CMD ["uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level info"]
+
 EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
