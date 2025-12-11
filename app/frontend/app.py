@@ -29,7 +29,7 @@ if not FULL_MOVIE_LIST:
 
 # IMPORTANT: API_URL needs to be updated when deployed to Render!
 # For local testing, use the Uvicorn address:
-API_URL = "http://127.0.0.1:8000/recommendations/user/"
+API_URL = "https://recommendation-system-e2e.onrender.com/recommendations/user/"
 
 st.set_page_config(
     page_title="Item-Item Movie Recommender",
