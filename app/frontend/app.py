@@ -8,7 +8,7 @@ import pandas as pd
 import joblib 
 import os 
 
-MODELS_DIR = '../../models/'
+MODELS_DIR = 'app/frontend'
 INDEX_MAP_PATH = os.path.join(MODELS_DIR, 'movie_index_map.pkl')
 
 @st.cache_resource
